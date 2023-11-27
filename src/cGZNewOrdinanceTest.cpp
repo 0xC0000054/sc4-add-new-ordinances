@@ -97,7 +97,9 @@ public:
 
 			if (pOrdinanceSimulator)
 			{
+#ifdef _DEBUG
 				DumpRegisteredOrdinances(pCity, pOrdinanceSimulator, true);
+#endif // _DEBUG
 
 				testOrdinance.PostCityInit(pCity);
 
@@ -112,10 +114,12 @@ public:
 
 				bool result = pOrdinanceSimulator->AddOrdinance(testOrdinance);
 
+#ifdef _DEBUG
 				if (result)
 				{
 					DumpRegisteredOrdinances(pCity, pOrdinanceSimulator, false);
 				}
+#endif // _DEBUG
 			}
 		}
 	}
