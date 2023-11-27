@@ -2,6 +2,11 @@
 
 A DLL Plugin for SimCity 4 that experiments with adding new ordinances to the game.
 
+The plugin will show up in the ordinances list as `New ordinance test1`. The ordinance is an expense ordinance with the same monthly cost as the Power Conservation ordinance ($-0.005 \times city population$).
+
+The plugin currently sends the following effects to the game: Mayor Rating, Commercial Demand Effect, Travel Strategy Modifier and Air Effect by zone type.
+All of those effects are using the default values from Ingred.ini, so the shouldn't have any in-game effect.
+
 ## Disclaimer:
 
 This mod is experimental, you probably should not test it in a city you care about.
@@ -15,6 +20,12 @@ This mod is experimental, you probably should not test it in a city you care abo
 ## Download
 
 The plugin can be downloaded from the Releases tab: https://github.com/0xC0000054/sc4-add-new-ordinances/releases   
+
+# Installation
+
+1. Close SimCity 4.
+2. Copy `SC4AddNewOrdinance.dll` into the Plugins folder in the SimCity 4 installation directory.
+3. Start SimCity 4.
 
 # License
 
