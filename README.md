@@ -1,6 +1,6 @@
 # sc4-add-new-ordinances
 
-A DLL Plugin for SimCity 4 that experiments with adding new ordinances to the game.
+A DLL Plugin for SimCity 4 that experiments with adding a new ordinance to the game. The game's ordinance simulator is one of the few systems that allows a DLL to add new code for the game to use in its simulations. 
 
 The plugin will show up in the ordinances list as `New ordinance test1`. The ordinance is an expense ordinance with the same monthly cost as the Power Conservation ordinance ($-0.005 \times city population$).
 
