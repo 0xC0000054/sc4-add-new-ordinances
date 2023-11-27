@@ -65,9 +65,7 @@ public:
 
 		std::array<int32_t, 9> travelStrategyModifierData
 		{
-			0, 0, 0,
-			0, 0, 0,
-			0, 0, 0
+			0, 0, 0, 0, 0, 0, 0, 0, 0
 		};
 
 		travelStrategyVariant->RefSint32(travelStrategyModifierData.data(), travelStrategyModifierData.size());
