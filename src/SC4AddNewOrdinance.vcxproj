@@ -36,7 +36,12 @@
     <ClInclude Include="..\vendor\include\SC4Percentage.h" />
     <ClInclude Include="OrdinanceBase.h" />
     <ClInclude Include="OrdinancePropertyHolder.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="TestOrdinance.h" />
+    <ClInclude Include="version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="version.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

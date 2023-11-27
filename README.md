@@ -1,6 +1,10 @@
 # sc4-add-new-ordinances
 
-A DLL Plugin for SimCity 4 that experiments with adding new ordinances to the game.   
+A DLL Plugin for SimCity 4 that experiments with adding new ordinances to the game.
+
+## Disclaimer:
+
+This mod is experimental, you probably should not test it in a city you care about.
 
 ## Known Issues
 
@@ -8,9 +12,9 @@ A DLL Plugin for SimCity 4 that experiments with adding new ordinances to the ga
   * This appears to be a bug in that dialog's code as the correct value is shown in the monthly income/expenses panel. 
 * The ordinance on/off state is not preserved when loading/saving a city.
 
-## Disclaimer:
+## Download
 
-This mod is experimental, you probably should not test it in a city you care about.
+The plugin can be downloaded from the Releases tab: https://github.com/0xC0000054/sc4-add-new-ordinances/releases   
 
 # License
 
