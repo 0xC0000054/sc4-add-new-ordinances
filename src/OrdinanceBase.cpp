@@ -112,14 +112,12 @@ bool OrdinanceBase::Shutdown(void)
 
 int32_t OrdinanceBase::GetCurrentMonthlyIncome(void)
 {
-	logger.WriteLine(__FUNCTION__);
-
 	const int32_t monthlyConstantIncome = GetMonthlyConstantIncome();
 	const double monthlyIncomeFactor = GetMonthlyIncomeFactor();
 
 	// The monthly income factor is multiplied by the city population.
-	const double cityPopulation = pResidentialSimulator->GetPopulation();
-	const double populationIncome = monthlyIncomeFactor * cityPopulation;
+	const int32_t cityPopulation = pResidentialSimulator->GetPopulation();
+	const double populationIncome = monthlyIncomeFactor * static_cast<double>(cityPopulation);
 
 	double monthlyIncome = static_cast<double>(monthlyConstantIncome) + populationIncome;	
 
@@ -134,7 +132,17 @@ int32_t OrdinanceBase::GetCurrentMonthlyIncome(void)
 		clampedMonthlyIncome = std::numeric_limits<int32_t>::max();
 	}
 
-	return static_cast<int32_t>(clampedMonthlyIncome);
+	const int32_t monthlyIncomeInteger = static_cast<int32_t>(clampedMonthlyIncome);
+
+	logger.WriteLineFormatted(
+		"%s: monthly income: constant=%d, factor=%f, population=%d, current=%d",
+		__FUNCTION__,
+		monthlyConstantIncome,
+		monthlyIncomeFactor,
+		cityPopulation,
+		monthlyIncomeInteger);
+
+	return monthlyIncomeInteger;
 }
 
 uint32_t OrdinanceBase::GetID(void)
@@ -191,15 +199,13 @@ bool OrdinanceBase::IsEnabled(void)
 
 int32_t OrdinanceBase::GetMonthlyAdjustedIncome(void)
 {
-	logger.WriteLine(__FUNCTION__);
+	logger.WriteLineFormatted("%s: result=%d", __FUNCTION__, monthlyAdjustedIncome);
 
 	return monthlyAdjustedIncome;
 }
 
 bool OrdinanceBase::CheckConditions(void)
 {
-	logger.WriteLine(__FUNCTION__);
-
 	bool result = false;
 
 	if (enabled)
@@ -215,14 +221,20 @@ bool OrdinanceBase::CheckConditions(void)
 		}
 	}
 
+	logger.WriteLineFormatted("%s: result=%d", __FUNCTION__, result);
+
 	return result;
 }
 
 bool OrdinanceBase::Simulate(void)
 {
-	logger.WriteLine(__FUNCTION__);
-
 	monthlyAdjustedIncome = GetCurrentMonthlyIncome();
+
+	logger.WriteLineFormatted(
+		"%s: monthlyAdjustedIncome=%d",
+		__FUNCTION__,
+		monthlyAdjustedIncome);
+
 	return true;
 }
 
@@ -268,6 +280,8 @@ bool OrdinanceBase::ForceEnabled(bool isEnabled)
 
 bool OrdinanceBase::ForceMonthlyAdjustedIncome(int32_t monthlyAdjustedIncome)
 {
+	logger.WriteLineFormatted("%s: value=%d", __FUNCTION__, monthlyAdjustedIncome);
+
 	monthlyAdjustedIncome = monthlyAdjustedIncome;
 	return true;
 }
