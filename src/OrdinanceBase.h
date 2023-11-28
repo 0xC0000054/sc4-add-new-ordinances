@@ -99,7 +99,7 @@ private:
 	uint32_t refCount;
 	cRZBaseString name;
 	cRZBaseString description;
-	uint32_t monthlyAdjustedIncome;
+	int32_t monthlyAdjustedIncome;
 	cISC4ResidentialSimulator* pResidentialSimulator;
 	cISC4Simulator* pSimulator;
 	OrdinancePropertyHolder miscProperties;
