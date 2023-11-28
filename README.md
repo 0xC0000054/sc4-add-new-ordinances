@@ -62,16 +62,16 @@ You may need to adjust the resolution for your screen.
 
 ## Source Code Layout
 
-[cGZNewOrdinanceTest.cpp](src/cGZNewOrdinanceTest.cpp) contains the plugin's COM director and registers the ordinance in the game.
+[cGZNewOrdinanceTest.cpp](src/cGZNewOrdinanceTest.cpp) is the main plugin file. It handles the setup that SC4 requires to load a DLL, setting the ordinance effects, and adding the ordinance into the game.
 
 [TestOrdinance.h](src/TestOrdinance.h) is the file that set the ordinance costs. Note that there are other methods that can be overridden
-to customize the ordinance logic. For example:
+to customize the ordinance logic, see [OrdinanceBase.h](src/OrdinanceBase.h). For example:
 
-* `GetCurrentMonthlyIncome` could be used to change the ordinance cost calculation, built-in examples include the `Legalized Gambling` and `Tourism Promotion Program`  ordinance.
+* `GetCurrentMonthlyIncome` could be used to change the ordinance cost calculation, built-in examples include the `Legalized Gambling` and `Tourism Promotion Program` ordinances.
 * `CheckConditions` could be overridden to add custom conditions for enabling the ordinance, built-in examples include the `Neighborhood Watch` and `Trash Presort Requirement` ordinances.
 
 [OrdinanceBase.cpp](src/OrdinanceBase.cpp) is the base class for `TestOrdinance`. It handles the common logic and provides a default implementation for `GetCurrentMonthlyIncome`.
 The default monthly cost calculation is used by a number of ordinances, e.g. the `Community CPR Training Program`, `Clean Air`, etc. 
 
-[OrdinancePropertyHolder.cpp](src/OrdinancePropertyHolder.cpp) provides the game with a list of effects that the ordinance that should be applied when the ordinance is enabled.
+[OrdinancePropertyHolder.cpp](src/OrdinancePropertyHolder.cpp) provides the game with a list of effects that should be applied when the ordinance is enabled.
 The effects can include Mayor Rating boosts, Demand boosts, etc.
