@@ -10,6 +10,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+#include "version.h"
+#include "Logger.h"
 #include "TestOrdinance.h"
 #include "cIGZFrameWork.h"
 #include "cIGZApp.h"
@@ -34,11 +36,15 @@
 #include <string>
 #include <vector>
 #include <Windows.h>
+#include "wil/resource.h"
+#include "wil/win32_helpers.h"
 
 static constexpr uint32_t kSC4MessagePostCityInit = 0x26d31ec1;
 static constexpr uint32_t kSC4MessagePreCityShutdown = 0x26D31EC2;
 
 static constexpr uint32_t kNewOrdinanceTestPluginDirectorID = 0xc8f8cd0f;
+
+static constexpr std::string_view PluginLogFileName = "SC4AddNewOrdinance.log";
 
 class cGZNewOrdinanceTestDllDirector : public cRZMessage2COMDirector
 {
@@ -46,6 +52,12 @@ public:
 
 	cGZNewOrdinanceTestDllDirector() : testOrdinance(0x7faee31b, "New ordinance test1", "Test1")
 	{
+		std::filesystem::path logFilePath = GetDllFolderPath();
+		logFilePath /= PluginLogFileName;
+
+		Logger& logger = Logger::GetInstance();
+		logger.Init(logFilePath);
+		logger.WriteLine("SC4AddNewOrdinance v" PLUGIN_VERSION_STR);
 	}
 
 	uint32_t GetDirectorID() const
@@ -198,6 +210,14 @@ public:
 	}
 
 private:
+	std::filesystem::path GetDllFolderPath()
+	{
+		wil::unique_cotaskmem_string modulePath = wil::GetModuleFileNameW(wil::GetModuleInstanceHandle());
+
+		std::filesystem::path temp(modulePath.get());
+
+		return temp.parent_path();
+	}
 
 #ifdef _DEBUG
 	void DumpRegisteredOrdinances(cISC4City* pCity, cISC4OrdinanceSimulator* pOrdinanceSimulator, bool countOnly)

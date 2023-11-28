@@ -39,7 +39,8 @@ OrdinanceBase::OrdinanceBase(uint32_t clsid, const char* name, const char* descr
   enabled(true),
   pResidentialSimulator(nullptr),
   pSimulator(nullptr),
-  miscProperties()
+  miscProperties(),
+  logger(Logger::GetInstance())
 {
 }
 
@@ -58,7 +59,8 @@ OrdinanceBase::OrdinanceBase(
 	  enabled(true),
 	  pResidentialSimulator(nullptr),
 	  pSimulator(nullptr),
-	  miscProperties(properties)
+	  miscProperties(properties),
+	  logger(Logger::GetInstance())
 {
 }
 
@@ -110,6 +112,8 @@ bool OrdinanceBase::Shutdown(void)
 
 int32_t OrdinanceBase::GetCurrentMonthlyIncome(void)
 {
+	logger.WriteLine(__FUNCTION__);
+
 	const int32_t monthlyConstantIncome = GetMonthlyConstantIncome();
 	const double monthlyIncomeFactor = GetMonthlyIncomeFactor();
 
@@ -187,11 +191,15 @@ bool OrdinanceBase::IsEnabled(void)
 
 int32_t OrdinanceBase::GetMonthlyAdjustedIncome(void)
 {
+	logger.WriteLine(__FUNCTION__);
+
 	return monthlyAdjustedIncome;
 }
 
 bool OrdinanceBase::CheckConditions(void)
 {
+	logger.WriteLine(__FUNCTION__);
+
 	bool result = false;
 
 	if (enabled)
@@ -212,12 +220,16 @@ bool OrdinanceBase::CheckConditions(void)
 
 bool OrdinanceBase::Simulate(void)
 {
+	logger.WriteLine(__FUNCTION__);
+
 	monthlyAdjustedIncome = GetCurrentMonthlyIncome();
 	return true;
 }
 
 bool OrdinanceBase::SetAvailable(bool isAvailable)
 {
+	logger.WriteLine(__FUNCTION__);
+
 	available = isAvailable;
 	monthlyAdjustedIncome = 0;
 	return true;
@@ -225,12 +237,16 @@ bool OrdinanceBase::SetAvailable(bool isAvailable)
 
 bool OrdinanceBase::SetOn(bool isOn)
 {
+	logger.WriteLine(__FUNCTION__);
+
 	on = isOn;
 	return true;
 }
 
 bool OrdinanceBase::SetEnabled(bool isEnabled)
 {
+	logger.WriteLine(__FUNCTION__);
+
 	enabled = isEnabled;
 	return true;
 }

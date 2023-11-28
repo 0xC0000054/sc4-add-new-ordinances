@@ -11,19 +11,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "OrdinancePropertyHolder.h"
+#include "Logger.h"
 
 static constexpr uint32_t GZIID_OrdinancePropertyHolder = 0x84672560;
 static constexpr uint32_t GZIID_cISCPropertyHolder = 0x25216283;
 
 namespace
 {
-#ifdef _DEBUG
-
-#include <Windows.h>
-#include <cstdio>
-
-#define LOGGING_ACTIVE
-
 	const char* GetPropertyDescription(uint32_t propertyID)
 	{
 		const char* value = nullptr;
@@ -145,26 +139,19 @@ namespace
 
     void LogPropertyId(const char* methodName, uint32_t propertyId)
     {
-#ifdef LOGGING_ACTIVE
-        char buffer[1024]{};
+		Logger& logger = Logger::GetInstance();
 
 		const char* propertyDescription = GetPropertyDescription(propertyId);
 
 		if (propertyDescription)
 		{
-			std::snprintf(buffer, sizeof(buffer), "%s: propertyId=0x%08x (%s)", methodName, propertyId, propertyDescription);
+			logger.WriteLineFormatted("%s: propertyId=0x%08x (%s)", methodName, propertyId, propertyDescription);
 		}
 		else
 		{
-			std::snprintf(buffer, sizeof(buffer), "%s: propertyId=0x%08x", methodName, propertyId);	
+			logger.WriteLineFormatted("%s: propertyId=0x%08x", methodName, propertyId);
 		}
-
-        OutputDebugStringA(buffer);
-        OutputDebugStringA("\n");
-#endif // LOGGING_ACTIVE
     }
-
-#endif // _DEBUG
 }
 
 OrdinancePropertyHolder::OrdinancePropertyHolder()
@@ -255,9 +242,7 @@ uint32_t OrdinancePropertyHolder::Release()
 
 bool OrdinancePropertyHolder::HasProperty(uint32_t dwProperty)
 {
-#ifdef _DEBUG
-    LogPropertyId(__FUNCSIG__, dwProperty);
-#endif // _DEBUG
+    LogPropertyId(__FUNCTION__, dwProperty);
 
 	for (const auto& property : properties)
 	{
@@ -277,9 +262,7 @@ bool OrdinancePropertyHolder::GetPropertyList(cIGZUnknownList** ppList)
 
 cISCProperty* OrdinancePropertyHolder::GetProperty(uint32_t dwProperty)
 {
-#ifdef _DEBUG
     LogPropertyId(__FUNCSIG__, dwProperty);
-#endif // _DEBUG
 
 	for (auto& property : properties)
 	{
@@ -297,9 +280,7 @@ cISCProperty* OrdinancePropertyHolder::GetProperty(uint32_t dwProperty)
 
 bool OrdinancePropertyHolder::GetProperty(uint32_t dwProperty, uint32_t& dwValueOut)
 {
-#ifdef _DEBUG
     LogPropertyId(__FUNCSIG__, dwProperty);
-#endif // _DEBUG
 
 	bool result = false;
 
@@ -319,27 +300,21 @@ bool OrdinancePropertyHolder::GetProperty(uint32_t dwProperty, uint32_t& dwValue
 
 bool OrdinancePropertyHolder::GetProperty(uint32_t dwProperty, cIGZString& szValueOut)
 {
-#ifdef _DEBUG
     LogPropertyId(__FUNCSIG__, dwProperty);
-#endif // _DEBUG
 
-    return false;
+	return false;
 }
 
 bool OrdinancePropertyHolder::GetProperty(uint32_t dwProperty, uint32_t riid, void** ppvObj)
 {
-#ifdef _DEBUG
     LogPropertyId(__FUNCSIG__, dwProperty);
-#endif // _DEBUG
 
     return false;
 }
 
 bool OrdinancePropertyHolder::GetProperty(uint32_t dwProperty, void* pUnknown, uint32_t& dwUnknownOut)
 {
-#ifdef _DEBUG
     LogPropertyId(__FUNCSIG__, dwProperty);
-#endif // _DEBUG
 
     return false;
 }

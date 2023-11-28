@@ -15,6 +15,7 @@
 #include "cISC4City.h"
 #include "cRZBaseString.h"
 #include "OrdinancePropertyHolder.h"
+#include "Logger.h"
 
 class OrdinanceBase : public cISC4Ordinance
 {
@@ -91,6 +92,8 @@ public:
 	virtual bool PreCityShutdown(cISC4City* pCity);
 
 private:
+
+	Logger& logger;
 
 	const uint32_t clsid;
 	uint32_t refCount;
