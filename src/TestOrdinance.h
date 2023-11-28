@@ -13,7 +13,7 @@
 #pragma once
 #include "OrdinanceBase.h"
 
-class TestOrdinance : public OrdinanceBase
+class TestOrdinance final : public OrdinanceBase
 {
 public:
 	TestOrdinance(uint32_t clsid, const char* name, const char* description)
