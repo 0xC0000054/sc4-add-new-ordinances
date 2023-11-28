@@ -40,9 +40,9 @@ public:
 
 	uint32_t Release();
 
-	virtual bool Init(void);
+	bool Init(void);
 
-	virtual bool Shutdown(void);
+	bool Shutdown(void);
 
 	virtual int32_t GetCurrentMonthlyIncome(void);
 
@@ -56,9 +56,9 @@ public:
 
 	virtual SC4Percentage GetChanceAvailability(void);
 
-	virtual cISCPropertyHolder* GetMiscProperties();
+	cISCPropertyHolder* GetMiscProperties();
 
-	virtual uint32_t GetAdvisorID(void);
+	uint32_t GetAdvisorID(void);
 
 	bool IsAvailable(void);
 
