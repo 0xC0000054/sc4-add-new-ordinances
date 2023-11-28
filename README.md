@@ -64,11 +64,11 @@ You may need to adjust the resolution for your screen.
 
 [cGZNewOrdinanceTest.cpp](src/cGZNewOrdinanceTest.cpp) is the main plugin file. It handles the setup that SC4 requires to load a DLL, setting the ordinance effects, and adding the ordinance into the game.
 
-[TestOrdinance.h](src/TestOrdinance.h) is the file that set the ordinance costs. Note that there are other methods that can be overridden
+[TestOrdinance.h](src/TestOrdinance.h) configures the ordinance costs and whether it is an income or expense. Note that there are other methods that can be overridden
 to customize the ordinance logic, see [OrdinanceBase.h](src/OrdinanceBase.h). For example:
 
-* `GetCurrentMonthlyIncome` could be used to change the ordinance cost calculation, built-in examples include the `Legalized Gambling` and `Tourism Promotion Program` ordinances.
-* `CheckConditions` could be overridden to add custom conditions for enabling the ordinance, built-in examples include the `Neighborhood Watch` and `Trash Presort Requirement` ordinances.
+* `GetCurrentMonthlyIncome` could be overridden to use a custom monthly cost calculation, built-in examples include the `Legalized Gambling` and `Tourism Promotion Program` ordinances.
+* `CheckConditions` could be overridden to set custom conditions for the ordinance to become available, built-in examples include the `Neighborhood Watch` and `Trash Presort Requirement` ordinances. Note that you do not need to override `CheckConditions` to set the in-game year that the ordinance becomes available, for that you override the `GetYearFirstAvailable` method that is inherited from `OrdinanceBase`.
 
 [OrdinanceBase.cpp](src/OrdinanceBase.cpp) is the base class for `TestOrdinance`. It handles the common logic and provides a default implementation for `GetCurrentMonthlyIncome`.
 The default monthly cost calculation is used by a number of ordinances, e.g. the `Community CPR Training Program`, `Clean Air`, etc. 
