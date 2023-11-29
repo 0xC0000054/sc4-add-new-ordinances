@@ -45,7 +45,7 @@ public:
 
 	bool Shutdown(void);
 
-	virtual int32_t GetCurrentMonthlyIncome(void);
+	virtual int64_t GetCurrentMonthlyIncome(void);
 
 	uint32_t GetID(void);
 	
@@ -67,7 +67,7 @@ public:
 
 	bool IsEnabled(void);
 
-	virtual int32_t GetMonthlyAdjustedIncome(void);
+	virtual int64_t GetMonthlyAdjustedIncome(void);
 
 	virtual bool CheckConditions(void);
 
@@ -85,7 +85,7 @@ public:
 
 	bool ForceEnabled(bool isEnabled);
 
-	bool ForceMonthlyAdjustedIncome(int32_t monthlyAdjustedIncome);
+	bool ForceMonthlyAdjustedIncome(int64_t monthlyAdjustedIncome);
 
 	virtual bool PostCityInit(cISC4City* pCity);
 
@@ -99,7 +99,7 @@ private:
 	uint32_t refCount;
 	cRZBaseString name;
 	cRZBaseString description;
-	int32_t monthlyAdjustedIncome;
+	int64_t monthlyAdjustedIncome;
 	cISC4ResidentialSimulator* pResidentialSimulator;
 	cISC4Simulator* pSimulator;
 	OrdinancePropertyHolder miscProperties;

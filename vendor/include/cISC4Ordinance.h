@@ -11,7 +11,7 @@ class cISC4Ordinance : public cIGZUnknown
 		virtual bool Init(void) = 0;
 		virtual bool Shutdown(void) = 0;
 
-		virtual int32_t GetCurrentMonthlyIncome(void) = 0;
+		virtual int64_t GetCurrentMonthlyIncome(void) = 0;
 
 		virtual uint32_t GetID(void) = 0;
 		virtual cIGZString* GetName(void) = 0;
@@ -20,9 +20,9 @@ class cISC4Ordinance : public cIGZUnknown
 		virtual uint32_t GetYearFirstAvailable(void) = 0;
 		virtual SC4Percentage GetChanceAvailability(void) = 0;
 
-		virtual int32_t GetEnactmentIncome(void) = 0;
-		virtual int32_t GetRetracmentIncome(void) = 0;
-		virtual int32_t GetMonthlyConstantIncome(void) = 0;
+		virtual int64_t GetEnactmentIncome(void) = 0;
+		virtual int64_t GetRetracmentIncome(void) = 0;
+		virtual int64_t GetMonthlyConstantIncome(void) = 0;
 		virtual float GetMonthlyIncomeFactor(void) = 0;
 
 		virtual uint32_t GetAdvisorID(void) = 0;
@@ -34,7 +34,7 @@ class cISC4Ordinance : public cIGZUnknown
 		virtual bool IsEnabled(void) = 0;
 
 		// TODO: Is int32_t the correct return type?
-		virtual int32_t GetMonthlyAdjustedIncome(void) = 0;
+		virtual int64_t GetMonthlyAdjustedIncome(void) = 0;
 
 		virtual bool CheckConditions(void) = 0;
 
@@ -51,5 +51,5 @@ class cISC4Ordinance : public cIGZUnknown
 		virtual bool ForceEnabled(bool isAvailable) = 0;
 
 		// TODO: Is int32_t the correct parameter type?
-		virtual bool ForceMonthlyAdjustedIncome(int32_t monthlyAdjustedIncome) = 0;
+		virtual bool ForceMonthlyAdjustedIncome(int64_t monthlyAdjustedIncome) = 0;
 };

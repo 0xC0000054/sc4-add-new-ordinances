@@ -256,16 +256,16 @@ private:
 						uint32_t advisorID = pOrdinance->GetAdvisorID();
 						cIGZString* name = pOrdinance->GetName();
 						bool isIncome = pOrdinance->IsIncomeOrdinance();
-						int32_t enactmentIncome = pOrdinance->GetEnactmentIncome();
-						int32_t retracmentIncome = pOrdinance->GetRetracmentIncome();
-						int32_t monthlyConstantIncome = pOrdinance->GetMonthlyConstantIncome();
+						int64_t enactmentIncome = pOrdinance->GetEnactmentIncome();
+						int64_t retracmentIncome = pOrdinance->GetRetracmentIncome();
+						int64_t monthlyConstantIncome = pOrdinance->GetMonthlyConstantIncome();
 						float monthlyIncomeFactor = pOrdinance->GetMonthlyIncomeFactor();
-						int32_t currentMonthlyIncome = pOrdinance->GetCurrentMonthlyIncome();
+						int64_t currentMonthlyIncome = pOrdinance->GetCurrentMonthlyIncome();
 
 						if (name)
 						{
 							PrintLineToDebugOutputFormatted(
-								"0x%08x = %s, advisorID=0x%08x, income=%s, enactment=%d, retracment=%d, monthly: constant=%d, factor=%f, current=%d, city population=%d",
+								"0x%08x = %s, advisorID=0x%08x, income=%s, enactment=%lld, retracment=%lld, monthly: constant=%lld, factor=%f, current=%lld, city population=%d",
 								clsid,
 								name->ToChar(),
 								advisorID,

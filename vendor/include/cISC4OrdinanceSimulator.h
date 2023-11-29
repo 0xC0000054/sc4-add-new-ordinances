@@ -34,9 +34,10 @@ class cISC4OrdinanceSimulator : public cIGZUnknown
 		virtual cISC4Ordinance* GetOrdinanceByID(uint32_t clsid) = 0;
 		virtual cISC4Ordinance* GetOrdinanceByName(cIGZString const& name) = 0;
 
-		virtual uint32_t GetOrdinanceMonthlyExpense(void) = 0;
-		virtual uint32_t GetOrdinanceMonthlyIncome(void) = 0;
+		virtual int64_t GetOrdinanceMonthlyExpense(void) = 0;
+		virtual int64_t GetOrdinanceMonthlyIncome(void) = 0;
 
-		virtual uint32_t GetCumulativeOffset(uint32_t unknown1, uint32_t unknown2) = 0;
+		// TODO: Verify that the return values are correct for these methods.
+		virtual int64_t GetCumulativeOffset(uint32_t unknown1, uint32_t unknown2) = 0;
 		virtual float GetCumulativeFactor(uint32_t unknown1, uint32_t unknown2) = 0;
 };

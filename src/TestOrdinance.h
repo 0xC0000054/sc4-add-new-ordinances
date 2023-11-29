@@ -22,21 +22,21 @@ public:
 	}
 
 	// These values are copied from the Power Conservation ordinance
-	int32_t GetEnactmentIncome()
+	int64_t GetEnactmentIncome()
 	{
 		logger.WriteLine(__FUNCTION__);
 
 		return -20;
 	}
 
-	int32_t GetRetracmentIncome()
+	int64_t GetRetracmentIncome()
 	{
 		logger.WriteLine(__FUNCTION__);
 
 		return -10;
 	}
 
-	int32_t GetMonthlyConstantIncome()
+	int64_t GetMonthlyConstantIncome()
 	{
 		logger.WriteLine(__FUNCTION__);
 
