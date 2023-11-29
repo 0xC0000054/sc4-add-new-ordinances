@@ -253,7 +253,6 @@ private:
 					if (pOrdinance)
 					{
 						uint32_t id = pOrdinance->GetID();
-						uint32_t advisorID = pOrdinance->GetAdvisorID();
 						cIGZString* name = pOrdinance->GetName();
 						bool isIncome = pOrdinance->IsIncomeOrdinance();
 						int64_t enactmentIncome = pOrdinance->GetEnactmentIncome();
@@ -265,10 +264,9 @@ private:
 						if (name)
 						{
 							PrintLineToDebugOutputFormatted(
-								"0x%08x = %s, advisorID=0x%08x, income=%s, enactment=%lld, retracment=%lld, monthly: constant=%lld, factor=%f, current=%lld, city population=%d",
+								"0x%08x = %s, income=%s, enactment=%lld, retracment=%lld, monthly: constant=%lld, factor=%f, current=%lld, city population=%d",
 								clsid,
 								name->ToChar(),
-								advisorID,
 								isIncome ? "true" : "false",
 								enactmentIncome,
 								retracmentIncome,
