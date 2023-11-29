@@ -145,11 +145,20 @@ namespace
 
 		if (propertyDescription)
 		{
-			logger.WriteLineFormatted("%s: propertyId=0x%08x (%s)", methodName, propertyId, propertyDescription);
+			logger.WriteLineFormatted(
+				LogOptions::OrdinancePropertyAPI,
+				"%s: propertyId=0x%08x (%s)",
+				methodName,
+				propertyId,
+				propertyDescription);
 		}
 		else
 		{
-			logger.WriteLineFormatted("%s: propertyId=0x%08x", methodName, propertyId);
+			logger.WriteLineFormatted(
+				LogOptions::OrdinancePropertyAPI,
+				"%s: propertyId=0x%08x",
+				methodName,
+				propertyId);
 		}
     }
 }

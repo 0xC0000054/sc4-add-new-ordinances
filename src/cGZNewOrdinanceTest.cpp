@@ -56,8 +56,8 @@ public:
 		logFilePath /= PluginLogFileName;
 
 		Logger& logger = Logger::GetInstance();
-		logger.Init(logFilePath);
-		logger.WriteLine("SC4AddNewOrdinance v" PLUGIN_VERSION_STR);
+		logger.Init(logFilePath, LogOptions::All);
+		logger.WriteLogFileHeader("SC4AddNewOrdinance v" PLUGIN_VERSION_STR);
 	}
 
 	uint32_t GetDirectorID() const

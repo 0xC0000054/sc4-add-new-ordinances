@@ -51,7 +51,7 @@ Logger& Logger::GetInstance()
     return logger;
 }
 
-Logger::Logger() : initialized(false), logFile()
+Logger::Logger() : initialized(false), logFile(), logOptions(LogOptions::Errors)
 {
 }
 
@@ -60,30 +60,42 @@ Logger::~Logger()
 	initialized = false;
 }
 
-void Logger::Init(std::filesystem::path logFilePath)
+void Logger::Init(std::filesystem::path logFilePath, LogOptions options)
 {
 	if (!initialized)
 	{
 		initialized = true;
 
 		logFile.open(logFilePath, std::ofstream::out | std::ofstream::trunc);
+		logOptions = options;
 	}
 }
 
-void Logger::WriteLine(const char* const message)
+void Logger::WriteLogFileHeader(const char* const text)
 {
-#ifdef _DEBUG
-	PrintLineToDebugOutput(message);
-#endif // _DEBUG
-
 	if (initialized && logFile)
 	{
-		logFile << GetTimeStamp() << message << std::endl;
+		logFile << text << std::endl;
 	}
 }
 
-void Logger::WriteLineFormatted(const char* const format, ...)
+void Logger::WriteLine(LogOptions options, const char* const message)
 {
+	if ((logOptions & options) == LogOptions::None)
+	{
+		return;
+	}
+
+	WriteLineCore(message);
+}
+
+void Logger::WriteLineFormatted(LogOptions options, const char* const format, ...)
+{
+	if ((logOptions & options) == LogOptions::None)
+	{
+		return;
+	}
+
 	va_list args;
 	va_start(args, format);
 
@@ -102,8 +114,20 @@ void Logger::WriteLineFormatted(const char* const format, ...)
 
 		std::vsnprintf(buffer.get(), formattedStringLengthWithNull, format, args);
 
-		WriteLine(buffer.get());
+		WriteLineCore(buffer.get());
 	}
 
 	va_end(args);
+}
+
+void Logger::WriteLineCore(const char* const message)
+{
+#ifdef _DEBUG
+	PrintLineToDebugOutput(message);
+#endif // _DEBUG
+
+	if (initialized && logFile)
+	{
+		logFile << GetTimeStamp() << message << std::endl;
+	}
 }

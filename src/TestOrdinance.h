@@ -24,35 +24,35 @@ public:
 	// These values are copied from the Power Conservation ordinance
 	int64_t GetEnactmentIncome()
 	{
-		logger.WriteLine(__FUNCTION__);
+		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
 
 		return -20;
 	}
 
 	int64_t GetRetracmentIncome()
 	{
-		logger.WriteLine(__FUNCTION__);
+		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
 
 		return -10;
 	}
 
 	int64_t GetMonthlyConstantIncome()
 	{
-		logger.WriteLine(__FUNCTION__);
+		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
 
 		return 0;
 	}
 
 	float GetMonthlyIncomeFactor()
 	{
-		logger.WriteLine(__FUNCTION__);
+		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
 
 		return -0.005f;
 	}
 
 	bool IsIncomeOrdinance()
 	{
-		logger.WriteLine(__FUNCTION__);
+		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
 
 		return false;
 	}

@@ -137,6 +137,7 @@ int64_t OrdinanceBase::GetCurrentMonthlyIncome(void)
 	}
 
 	logger.WriteLineFormatted(
+		LogOptions::OrdinanceAPI,
 		"%s: monthly income: constant=%lld, factor=%f, population=%d, current=%lld",
 		__FUNCTION__,
 		monthlyConstantIncome,
@@ -201,7 +202,11 @@ bool OrdinanceBase::IsEnabled(void)
 
 int64_t OrdinanceBase::GetMonthlyAdjustedIncome(void)
 {
-	logger.WriteLineFormatted("%s: result=%lld", __FUNCTION__, monthlyAdjustedIncome);
+	logger.WriteLineFormatted(
+		LogOptions::OrdinanceAPI,
+		"%s: result=%lld",
+		__FUNCTION__,
+		monthlyAdjustedIncome);
 
 	return monthlyAdjustedIncome;
 }
@@ -223,7 +228,11 @@ bool OrdinanceBase::CheckConditions(void)
 		}
 	}
 
-	logger.WriteLineFormatted("%s: result=%d", __FUNCTION__, result);
+	logger.WriteLineFormatted(
+		LogOptions::OrdinanceAPI,
+		"%s: result=%d",
+		__FUNCTION__,
+		result);
 
 	return result;
 }
@@ -233,6 +242,7 @@ bool OrdinanceBase::Simulate(void)
 	monthlyAdjustedIncome = GetCurrentMonthlyIncome();
 
 	logger.WriteLineFormatted(
+		LogOptions::OrdinanceAPI,
 		"%s: monthlyAdjustedIncome=%lld",
 		__FUNCTION__,
 		monthlyAdjustedIncome);
@@ -242,7 +252,11 @@ bool OrdinanceBase::Simulate(void)
 
 bool OrdinanceBase::SetAvailable(bool isAvailable)
 {
-	logger.WriteLine(__FUNCTION__);
+	logger.WriteLineFormatted(
+		LogOptions::OrdinanceAPI,
+		"%s: value=%d",
+		__FUNCTION__,
+		isAvailable);
 
 	available = isAvailable;
 	monthlyAdjustedIncome = 0;
@@ -251,7 +265,11 @@ bool OrdinanceBase::SetAvailable(bool isAvailable)
 
 bool OrdinanceBase::SetOn(bool isOn)
 {
-	logger.WriteLine(__FUNCTION__);
+	logger.WriteLineFormatted(
+		LogOptions::OrdinanceAPI,
+		"%s: value=%d",
+		__FUNCTION__,
+		isOn);
 
 	on = isOn;
 	return true;
@@ -259,7 +277,11 @@ bool OrdinanceBase::SetOn(bool isOn)
 
 bool OrdinanceBase::SetEnabled(bool isEnabled)
 {
-	logger.WriteLine(__FUNCTION__);
+	logger.WriteLineFormatted(
+		LogOptions::OrdinanceAPI,
+		"%s: value=%d",
+		__FUNCTION__,
+		isEnabled);
 
 	enabled = isEnabled;
 	return true;
@@ -282,7 +304,11 @@ bool OrdinanceBase::ForceEnabled(bool isEnabled)
 
 bool OrdinanceBase::ForceMonthlyAdjustedIncome(int64_t monthlyAdjustedIncome)
 {
-	logger.WriteLineFormatted("%s: value=%lld", __FUNCTION__, monthlyAdjustedIncome);
+	logger.WriteLineFormatted(
+		LogOptions::OrdinanceAPI,
+		"%s: value=%lld",
+		__FUNCTION__,
+		monthlyAdjustedIncome);
 
 	monthlyAdjustedIncome = monthlyAdjustedIncome;
 	return true;
