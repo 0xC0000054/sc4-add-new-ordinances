@@ -13,8 +13,6 @@ This mod is experimental, you probably should not test it in a city you care abo
 
 ## Known Issues
 
-* The ordinance dialog budget calculation preview is incorrect when this ordinance is enabled.
-  * This appears to be a bug in that dialog's code as the correct value is shown in the monthly income/expenses panel. 
 * The ordinance on/off state is not preserved when loading/saving a city.
 
 ## System Requirements
