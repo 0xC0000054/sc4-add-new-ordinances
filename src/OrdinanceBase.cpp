@@ -28,11 +28,24 @@ namespace
 	}
 }
 
-OrdinanceBase::OrdinanceBase(uint32_t clsid, const char* name, const char* description)
+OrdinanceBase::OrdinanceBase(
+	uint32_t clsid,
+	const char* name,
+	const char* description,
+	int64_t enactmentIncome,
+	int64_t retracmentIncome,
+	int64_t monthlyConstantIncome,
+	float monthlyIncomeFactor,
+	bool isIncomeOrdinance)
 : clsid(clsid),
   refCount(0),
   name(name),
   description(description),
+  enactmentIncome(enactmentIncome),
+  retracmentIncome(retracmentIncome),
+  monthlyConstantIncome(monthlyConstantIncome),
+  monthlyIncomeFactor(monthlyIncomeFactor),
+  isIncomeOrdinance(isIncomeOrdinance),
   monthlyAdjustedIncome(0),
   available(false),
   on(false),
@@ -48,11 +61,21 @@ OrdinanceBase::OrdinanceBase(
 	uint32_t clsid, 
 	const char* name,
 	const char* description,
+	int64_t enactmentIncome,
+	int64_t retracmentIncome,
+	int64_t monthlyConstantIncome,
+	float monthlyIncomeFactor,
+	bool isIncomeOrdinance,
 	const OrdinancePropertyHolder& properties)
 	: clsid(clsid),
 	  refCount(0),
 	  name(name),
 	  description(description),
+	  enactmentIncome(enactmentIncome),
+	  retracmentIncome(retracmentIncome),
+	  monthlyConstantIncome(monthlyConstantIncome),
+	  monthlyIncomeFactor(monthlyIncomeFactor),
+	  isIncomeOrdinance(isIncomeOrdinance),
 	  monthlyAdjustedIncome(0),
 	  available(false),
 	  on(false),
@@ -175,6 +198,34 @@ SC4Percentage OrdinanceBase::GetChanceAvailability(void)
 	return percentage;
 }
 
+int64_t OrdinanceBase::GetEnactmentIncome(void)
+{
+	logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
+
+	return enactmentIncome;
+}
+
+int64_t OrdinanceBase::GetRetracmentIncome(void)
+{
+	logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
+
+	return retracmentIncome;
+}
+
+int64_t OrdinanceBase::GetMonthlyConstantIncome(void)
+{
+	logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
+
+	return monthlyConstantIncome;
+}
+
+float OrdinanceBase::GetMonthlyIncomeFactor(void)
+{
+	logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
+
+	return monthlyIncomeFactor;
+}
+
 cISCPropertyHolder* OrdinanceBase::GetMiscProperties()
 {
 	return &miscProperties;
@@ -235,6 +286,13 @@ bool OrdinanceBase::CheckConditions(void)
 		result);
 
 	return result;
+}
+
+bool OrdinanceBase::IsIncomeOrdinance(void)
+{
+	logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
+
+	return isIncomeOrdinance;
 }
 
 bool OrdinanceBase::Simulate(void)

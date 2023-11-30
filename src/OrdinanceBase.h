@@ -24,12 +24,22 @@ public:
 	OrdinanceBase(
 		uint32_t clsid,
 		const char* name,
-		const char* description);
+		const char* description,
+		int64_t enactmentIncome,
+		int64_t retracmentIncome,
+		int64_t monthlyConstantIncome,
+		float monthlyIncomeFactor,
+		bool isIncomeOrdinance);
 
 	OrdinanceBase(
 		uint32_t clsid,
 		const char* name,
 		const char* description,
+		int64_t enactmentIncome,
+		int64_t retracmentIncome,
+		int64_t monthlyConstantIncome,
+		float monthlyIncomeFactor,
+		bool isIncomeOrdinance,
 		const OrdinancePropertyHolder& properties);
 
 	OrdinanceBase(const OrdinanceBase& other) = delete;
@@ -57,6 +67,14 @@ public:
 
 	virtual SC4Percentage GetChanceAvailability(void);
 
+	int64_t GetEnactmentIncome(void);
+
+	int64_t GetRetracmentIncome(void);
+
+	int64_t GetMonthlyConstantIncome(void);
+
+	float GetMonthlyIncomeFactor(void);
+
 	cISCPropertyHolder* GetMiscProperties();
 
 	uint32_t GetAdvisorID(void);
@@ -70,6 +88,8 @@ public:
 	virtual int64_t GetMonthlyAdjustedIncome(void);
 
 	virtual bool CheckConditions(void);
+
+	bool IsIncomeOrdinance(void);
 
 	virtual bool Simulate(void);
 
@@ -99,6 +119,11 @@ private:
 	uint32_t refCount;
 	cRZBaseString name;
 	cRZBaseString description;
+	int64_t enactmentIncome;
+	int64_t retracmentIncome;
+	int64_t monthlyConstantIncome;
+	float monthlyIncomeFactor;
+	bool isIncomeOrdinance;
 	int64_t monthlyAdjustedIncome;
 	cISC4ResidentialSimulator* pResidentialSimulator;
 	cISC4Simulator* pSimulator;

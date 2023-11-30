@@ -15,49 +15,25 @@
 
 class TestOrdinance final : public OrdinanceBase
 {
-public:
-	TestOrdinance(uint32_t clsid, const char* name, const char* description)
-		: OrdinanceBase(clsid, name, description), logger(Logger::GetInstance())
-	{
-	}
-
 	// These values are copied from the Power Conservation ordinance
-	int64_t GetEnactmentIncome()
+	static constexpr int64_t enactmentIncome = -20;
+	static constexpr int64_t retracmentIncome = -10;
+	static constexpr int64_t monthlyConstantIncome = 0;
+	static constexpr float monthlyIncomeFactor = -0.005f;
+	static constexpr bool isIncomeOrdinance = false;
+
+public:
+
+	TestOrdinance(uint32_t clsid, const char* name, const char* description)
+		: OrdinanceBase(
+			clsid,
+			name,
+			description,
+			enactmentIncome,
+			retracmentIncome,
+			monthlyConstantIncome,
+			monthlyIncomeFactor,
+			isIncomeOrdinance)
 	{
-		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
-
-		return -20;
 	}
-
-	int64_t GetRetracmentIncome()
-	{
-		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
-
-		return -10;
-	}
-
-	int64_t GetMonthlyConstantIncome()
-	{
-		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
-
-		return 0;
-	}
-
-	float GetMonthlyIncomeFactor()
-	{
-		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
-
-		return -0.005f;
-	}
-
-	bool IsIncomeOrdinance()
-	{
-		logger.WriteLine(LogOptions::OrdinanceAPI, __FUNCTION__);
-
-		return false;
-	}
-
-private:
-
-	Logger& logger;
 };
