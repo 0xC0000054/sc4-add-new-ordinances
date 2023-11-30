@@ -71,6 +71,11 @@ void Logger::Init(std::filesystem::path logFilePath, LogOptions options)
 	}
 }
 
+bool Logger::IsEnabled(LogOptions option) const
+{
+	return (logOptions & option) != LogOptions::None;
+}
+
 void Logger::WriteLogFileHeader(const char* const text)
 {
 	if (initialized && logFile)

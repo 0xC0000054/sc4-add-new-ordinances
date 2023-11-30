@@ -107,10 +107,6 @@ public:
 
 			if (pOrdinanceSimulator)
 			{
-#ifdef _DEBUG
-				DumpRegisteredOrdinances(pCity, pOrdinanceSimulator, true);
-#endif // _DEBUG
-
 				testOrdinance.PostCityInit(pCity);
 
 				std::vector<cSCBaseProperty> ordinanceEffects = CreateOrdinanceEffects();
@@ -124,12 +120,7 @@ public:
 
 				bool result = pOrdinanceSimulator->AddOrdinance(testOrdinance);
 
-#ifdef _DEBUG
-				if (result)
-				{
-					DumpRegisteredOrdinances(pCity, pOrdinanceSimulator, false);
-				}
-#endif // _DEBUG
+				DumpRegisteredOrdinances(pCity, pOrdinanceSimulator);
 			}
 		}
 	}
@@ -219,16 +210,25 @@ private:
 		return temp.parent_path();
 	}
 
-#ifdef _DEBUG
-	void DumpRegisteredOrdinances(cISC4City* pCity, cISC4OrdinanceSimulator* pOrdinanceSimulator, bool countOnly)
+	void DumpRegisteredOrdinances(cISC4City* pCity, cISC4OrdinanceSimulator* pOrdinanceSimulator)
 	{
+		Logger& logger = Logger::GetInstance();
+
+		if (!logger.IsEnabled(LogOptions::DumpRegisteredOrdinances))
+		{
+			return;
+		}
+
 		uint32_t dwCountOut = 0;
 
 		uint32_t registeredOrdinances = pOrdinanceSimulator->GetOrdinanceIDArray(nullptr, dwCountOut);
 
-		PrintLineToDebugOutputFormatted("The game has %d ordinances registered.", registeredOrdinances);
+		logger.WriteLineFormatted(
+			LogOptions::DumpRegisteredOrdinances,
+			"The game has %d ordinances registered.",
+			registeredOrdinances);
 
-		if (!countOnly && registeredOrdinances > 0)
+		if (registeredOrdinances > 0)
 		{
 			std::vector<uint32_t> registeredOrdinanceIDs(static_cast<size_t>(registeredOrdinances));
 			uint32_t ordinancesRequested = registeredOrdinances;
@@ -263,7 +263,8 @@ private:
 
 						if (name)
 						{
-							PrintLineToDebugOutputFormatted(
+							logger.WriteLineFormatted(
+								LogOptions::DumpRegisteredOrdinances,
 								"0x%08x = %s, income=%s, enactment=%lld, retracment=%lld, monthly: constant=%lld, factor=%f, current=%lld, city population=%d",
 								clsid,
 								name->ToChar(),
@@ -277,39 +278,17 @@ private:
 						}
 						else
 						{
-							PrintLineToDebugOutputFormatted("0x%08x", clsid);
+							logger.WriteLineFormatted(LogOptions::DumpRegisteredOrdinances, "0x%08x", clsid);
 						}
 					}
 					else
 					{
-						PrintLineToDebugOutputFormatted("0x%08x", clsid);
+						logger.WriteLineFormatted(LogOptions::DumpRegisteredOrdinances, "0x%08x", clsid);
 					}
 				}
 			}
 		}
 	}
-
-
-	void PrintLineToDebugOutputFormatted(const char* format, ...)
-	{
-		char buffer[1024]{};
-
-		va_list args;
-		va_start(args, format);
-
-		std::vsnprintf(buffer, sizeof(buffer), format, args);
-
-		va_end(args);
-
-		PrintLineToDebugOutput(buffer);
-	}
-
-	void PrintLineToDebugOutput(const char* line)
-	{
-		OutputDebugStringA(line);
-		OutputDebugStringA("\n");
-	}
-#endif // _DEBUG
 
 	TestOrdinance testOrdinance;
 };

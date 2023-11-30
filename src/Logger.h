@@ -21,7 +21,8 @@ enum class LogOptions : int32_t
 	Errors = 1 << 0,
 	OrdinanceAPI = 1 << 1,
 	OrdinancePropertyAPI = 1 << 2,
-	All = Errors | OrdinanceAPI | OrdinancePropertyAPI
+	DumpRegisteredOrdinances = 1 << 3,
+	All = Errors | OrdinanceAPI | OrdinancePropertyAPI | DumpRegisteredOrdinances
 };
 
 inline LogOptions operator|(LogOptions lhs, LogOptions rhs)
@@ -47,6 +48,8 @@ public:
 	static Logger& GetInstance();
 
 	void Init(std::filesystem::path logFilePath, LogOptions logLevel);
+
+	bool IsEnabled(LogOptions option) const;
 
 	void WriteLogFileHeader(const char* const message);
 
