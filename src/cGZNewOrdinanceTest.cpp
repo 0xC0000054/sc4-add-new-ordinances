@@ -161,6 +161,8 @@ public:
 
 	bool PostAppInit()
 	{
+		Logger& logger = Logger::GetInstance();
+
 		cIGZMessageServer2Ptr pMsgServ;
 		if (pMsgServ)
 		{
@@ -172,14 +174,14 @@ public:
 			{
 				if (!pMsgServ->AddNotification(this, messageID))
 				{
-					MessageBoxA(nullptr, "Failed to subscribe to the required notifications.", "NewOrdinanceTest", MB_OK | MB_ICONERROR);
+					logger.WriteLine(LogOptions::Errors, "Failed to subscribe to the required notifications.");
 					return true;
 				}
 			}
 		}
 		else
 		{
-			MessageBoxA(nullptr, "Failed to subscribe to the required notifications.", "NewOrdinanceTest", MB_OK | MB_ICONERROR);
+			logger.WriteLine(LogOptions::Errors, "Failed to subscribe to the required notifications.");
 			return true;
 		}
 		return true;
