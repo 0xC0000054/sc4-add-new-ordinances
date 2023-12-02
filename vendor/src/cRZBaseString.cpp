@@ -49,6 +49,41 @@ cRZBaseString::cRZBaseString(void)
 	// Empty
 }
 
+cRZBaseString::cRZBaseString(const cRZBaseString& other)
+	: mnRefCount(0), szData(other.szData)
+{
+}
+
+cRZBaseString::cRZBaseString(cRZBaseString&& other) noexcept
+	: mnRefCount(other.mnRefCount), szData(std::move(other.szData))
+{
+}
+
+cRZBaseString& cRZBaseString::operator=(const cRZBaseString& other)
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	szData = other.szData;
+
+	return *this;
+}
+
+cRZBaseString& cRZBaseString::operator=(cRZBaseString&& other) noexcept
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	mnRefCount = other.mnRefCount;
+	szData = std::move(other.szData);
+
+	return *this;
+}
+
 bool cRZBaseString::QueryInterface(uint32_t riid, void** ppvObj) {
 	switch (riid) {
 		case kRZBaseStringIID:

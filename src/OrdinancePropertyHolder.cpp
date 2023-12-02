@@ -11,8 +11,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "OrdinancePropertyHolder.h"
+#include "cIGZIStream.h"
+#include "cIGZOStream.h"
 #include "Logger.h"
 
+static constexpr uint32_t GZCLSID_OrdinancePropertyHolder = 0xd0f95c79;
 static constexpr uint32_t GZIID_OrdinancePropertyHolder = 0x84672560;
 static constexpr uint32_t GZIID_cISCPropertyHolder = 0x25216283;
 
@@ -168,6 +171,11 @@ OrdinancePropertyHolder::OrdinancePropertyHolder()
 {
 }
 
+OrdinancePropertyHolder::OrdinancePropertyHolder(const std::vector<cSCBaseProperty>& properties)
+	: refCount(0), properties(properties)
+{
+}
+
 OrdinancePropertyHolder::OrdinancePropertyHolder(const OrdinancePropertyHolder& other)
 	: refCount(0), properties(other.properties)
 {
@@ -223,10 +231,17 @@ bool OrdinancePropertyHolder::QueryInterface(uint32_t riid, void** ppvObj)
 
 		return true;
 	}
+	else if (riid == GZIID_cIGZSerializable)
+	{
+		AddRef();
+		*ppvObj = static_cast<cIGZSerializable*>(this);
+
+		return true;
+	}
     else if (riid == GZIID_cIGZUnknown)
     {
 		AddRef();
-        *ppvObj = static_cast<cIGZUnknown*>(this);
+        *ppvObj = static_cast<cIGZUnknown*>(static_cast<cISCPropertyHolder*>(this));
 
         return true;
     }
@@ -405,4 +420,71 @@ bool OrdinancePropertyHolder::EnumProperties(FunctionPtr2 pFunction2, FunctionPt
 bool OrdinancePropertyHolder::CompactProperties(void)
 {
     return false;
+}
+
+bool OrdinancePropertyHolder::Write(cIGZOStream& stream)
+{
+	if (stream.GetError() != 0)
+	{
+		return false;
+	}
+
+	const uint32_t version = 1;
+	const uint32_t propertyCount = static_cast<uint32_t>(properties.size());
+
+	if (!stream.SetUint32(version) || !stream.SetUint32(propertyCount))
+	{
+		return false;
+	}
+
+	for (uint32_t i = 0; i < propertyCount; i++)
+	{
+		if (!properties[i].Write(stream))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool OrdinancePropertyHolder::Read(cIGZIStream& stream)
+{
+	if (stream.GetError() != 0)
+	{
+		return false;
+	}
+
+	uint32_t version = 0;
+	if (!stream.GetUint32(version) || version != 1)
+	{
+		return false;
+	}
+
+	uint32_t propertyCount = 0;
+	if (!stream.GetUint32(propertyCount))
+	{
+		return false;
+	}
+
+	properties.clear();
+
+	for (uint32_t i = 0; i < propertyCount; i++)
+	{
+		cSCBaseProperty prop;
+
+		if (!prop.Read(stream))
+		{
+			return false;
+		}
+
+		properties.push_back(prop);
+	}
+
+	return true;
+}
+
+uint32_t OrdinancePropertyHolder::GetGZCLSID()
+{
+	return GZCLSID_OrdinancePropertyHolder;
 }

@@ -24,7 +24,11 @@ class TestOrdinance final : public OrdinanceBase
 
 public:
 
-	TestOrdinance(uint32_t clsid, const char* name, const char* description)
+	TestOrdinance(
+		uint32_t clsid,
+		const char* name,
+		const char* description,
+		const OrdinancePropertyHolder& properties)
 		: OrdinanceBase(
 			clsid,
 			name,
@@ -33,7 +37,8 @@ public:
 			retracmentIncome,
 			monthlyConstantIncome,
 			monthlyIncomeFactor,
-			isIncomeOrdinance)
+			isIncomeOrdinance,
+			properties)
 	{
 	}
 };

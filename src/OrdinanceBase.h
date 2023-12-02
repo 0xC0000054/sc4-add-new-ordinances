@@ -13,11 +13,12 @@
 #pragma once
 #include "cISC4Ordinance.h"
 #include "cISC4City.h"
+#include "cIGZSerializable.h"
 #include "cRZBaseString.h"
 #include "OrdinancePropertyHolder.h"
 #include "Logger.h"
 
-class OrdinanceBase : public cISC4Ordinance
+class OrdinanceBase : public cISC4Ordinance, cIGZSerializable
 {
 public:
 
@@ -42,8 +43,11 @@ public:
 		bool isIncomeOrdinance,
 		const OrdinancePropertyHolder& properties);
 
-	OrdinanceBase(const OrdinanceBase& other) = delete;
-	OrdinanceBase(OrdinanceBase&& other) noexcept = delete;
+	OrdinanceBase(const OrdinanceBase& other);
+	OrdinanceBase(OrdinanceBase&& other) noexcept;
+
+	OrdinanceBase& operator=(const OrdinanceBase& other);
+	OrdinanceBase& operator=(OrdinanceBase&& other) noexcept;
 
 	bool QueryInterface(uint32_t riid, void** ppvObj);
 	
@@ -57,7 +61,7 @@ public:
 
 	virtual int64_t GetCurrentMonthlyIncome(void);
 
-	uint32_t GetID(void);
+	uint32_t GetID(void) const;
 	
 	cIGZString* GetName(void);
 
@@ -113,23 +117,29 @@ public:
 
 private:
 
+	bool Write(cIGZOStream& stream);
+	bool Read(cIGZIStream& stream);
+	uint32_t GetGZCLSID();
+
 	Logger& logger;
 
-	const uint32_t clsid;
+	uint32_t clsid;
 	uint32_t refCount;
 	cRZBaseString name;
 	cRZBaseString description;
 	int64_t enactmentIncome;
 	int64_t retracmentIncome;
 	int64_t monthlyConstantIncome;
+	int64_t monthlyAdjustedIncome;
 	float monthlyIncomeFactor;
 	bool isIncomeOrdinance;
-	int64_t monthlyAdjustedIncome;
 	cISC4ResidentialSimulator* pResidentialSimulator;
 	cISC4Simulator* pSimulator;
 	OrdinancePropertyHolder miscProperties;
+	bool initialized;
 	bool available;
 	bool on;
 	bool enabled;
+	bool haveDeserialized;
 };
 

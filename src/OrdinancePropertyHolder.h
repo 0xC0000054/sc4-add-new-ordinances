@@ -12,14 +12,17 @@
 
 #pragma once
 #include "cISCPropertyHolder.h"
+#include "cIGZSerializable.h"
 #include "cSCBaseProperty.h"
 #include <vector>
 
-class OrdinancePropertyHolder : public cISCPropertyHolder
+class OrdinancePropertyHolder : public cISCPropertyHolder, cIGZSerializable
 {
 public:
 
 	OrdinancePropertyHolder();
+
+	OrdinancePropertyHolder(const std::vector<cSCBaseProperty>& properties);
 
 	OrdinancePropertyHolder(const OrdinancePropertyHolder& other);
 	OrdinancePropertyHolder(OrdinancePropertyHolder&& other) noexcept;
@@ -58,6 +61,10 @@ public:
 	virtual bool EnumProperties(FunctionPtr2 pFunction2, FunctionPtr1 pFunctionPipe);
 
 	virtual bool CompactProperties(void);
+
+	bool Write(cIGZOStream& stream);
+	bool Read(cIGZIStream& stream);
+	uint32_t GetGZCLSID();
 
 private:
 	

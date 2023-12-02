@@ -50,7 +50,8 @@ class cGZNewOrdinanceTestDllDirector : public cRZMessage2COMDirector
 {
 public:
 
-	cGZNewOrdinanceTestDllDirector() : testOrdinance(0x7faee31b, "New ordinance test1", "Test1")
+	cGZNewOrdinanceTestDllDirector()
+		: testOrdinance(0x7faee31b, "New ordinance test1", "Test1", CreateOrdinanceEffects())
 	{
 		std::filesystem::path logFilePath = GetDllFolderPath();
 		logFilePath /= PluginLogFileName;
@@ -65,7 +66,31 @@ public:
 		return kNewOrdinanceTestPluginDirectorID;
 	}
 
-	std::vector<cSCBaseProperty> CreateOrdinanceEffects()
+	void EnumClassObjects(cIGZCOMDirector::ClassObjectEnumerationCallback pCallback, void* pContext)
+	{
+		// The classes you want to add must be initialized in the DLL constructor because
+		// the framework calls this method before OnStart or any of the hook callbacks.
+		// This method is called once when initializing a director, the list of class IDs
+		// it returns is cached by the framework.
+		pCallback(testOrdinance.GetID(), 0, pContext);
+	}
+
+	bool GetClassObject(uint32_t rclsid, uint32_t riid, void** ppvObj)
+	{
+		// To retrieve an instance of a registered class the framework will call the
+		// GetClassObject method whenever it needs the director to provide one.
+
+		bool result = false;
+
+		if (rclsid == testOrdinance.GetID())
+		{
+			result = testOrdinance.QueryInterface(riid, ppvObj);
+		}
+
+		return result;
+	}
+
+	OrdinancePropertyHolder CreateOrdinanceEffects()
 	{
 		std::vector<cSCBaseProperty> properties;
 
@@ -94,7 +119,7 @@ public:
 		airEffectVariant->RefFloat32(airEffectData.data(), airEffectData.size());
 		properties.push_back(airEffectByZoneType);
 
-		return properties;
+		return OrdinancePropertyHolder(properties);
 	}
 
 	void PostCityInit(cIGZMessage2Standard* pStandardMsg)
@@ -109,16 +134,12 @@ public:
 			{
 				testOrdinance.PostCityInit(pCity);
 
-				std::vector<cSCBaseProperty> ordinanceEffects = CreateOrdinanceEffects();
-
-				cISCPropertyHolder* miscProperties = testOrdinance.GetMiscProperties();
-
-				for (auto& property : ordinanceEffects)
+				// Only add the ordinance if it is not already present. If it is part
+				// of the city save file it will have already been loaded at this point.
+				if (!pOrdinanceSimulator->GetOrdinanceByID(testOrdinance.GetID()))
 				{
-					miscProperties->AddProperty(&property, false);
+					pOrdinanceSimulator->AddOrdinance(testOrdinance);
 				}
-
-				bool result = pOrdinanceSimulator->AddOrdinance(testOrdinance);
 
 				DumpRegisteredOrdinances(pCity, pOrdinanceSimulator);
 			}

@@ -12,6 +12,8 @@
 
 #include "OrdinanceBase.h"
 #include "cIGZDate.h"
+#include "cIGZIStream.h"
+#include "cIGZOStream.h"
 #include "cISC4ResidentialSimulator.h"
 #include "cISC4Simulator.h"
 #include "SC4Percentage.h"
@@ -20,11 +22,24 @@
 
 namespace
 {
-	bool ApproximatelyEqual(double a, double b, double tolerance)
+	bool ReadBool(cIGZIStream& stream, bool& value)
 	{
-		// Adapted from https://stackoverflow.com/a/253874
-		// It is based on an algorithm in "The Art of Computer Programming: Seminumerical algorithms" by Donald Knuth
-		return abs(a - b) <= ((abs(a) < abs(b) ? abs(b) : abs(a)) * tolerance);
+		uint8_t temp = 0;
+		// We use GetVoid because GetUint8 always returns false.
+		if (!stream.GetVoid(&temp, 1))
+		{
+			return false;
+		}
+
+		value = temp != 0;
+		return true;
+	}
+
+	bool WriteBool(cIGZOStream& stream, bool value)
+	{
+		const uint8_t uint8Value = static_cast<uint8_t>(value);
+
+		return stream.SetVoid(&uint8Value, 1);
 	}
 }
 
@@ -37,23 +52,25 @@ OrdinanceBase::OrdinanceBase(
 	int64_t monthlyConstantIncome,
 	float monthlyIncomeFactor,
 	bool isIncomeOrdinance)
-: clsid(clsid),
-  refCount(0),
-  name(name),
-  description(description),
-  enactmentIncome(enactmentIncome),
-  retracmentIncome(retracmentIncome),
-  monthlyConstantIncome(monthlyConstantIncome),
-  monthlyIncomeFactor(monthlyIncomeFactor),
-  isIncomeOrdinance(isIncomeOrdinance),
-  monthlyAdjustedIncome(0),
-  available(false),
-  on(false),
-  enabled(true),
-  pResidentialSimulator(nullptr),
-  pSimulator(nullptr),
-  miscProperties(),
-  logger(Logger::GetInstance())
+	: clsid(clsid),
+	  refCount(0),
+	  name(name),
+	  description(description),
+	  enactmentIncome(enactmentIncome),
+	  retracmentIncome(retracmentIncome),
+	  monthlyConstantIncome(monthlyConstantIncome),
+	  monthlyIncomeFactor(monthlyIncomeFactor),
+	  isIncomeOrdinance(isIncomeOrdinance),
+	  monthlyAdjustedIncome(0),
+	  initialized(false),
+	  available(false),
+	  on(false),
+	  enabled(false),
+	  haveDeserialized(false),
+	  pResidentialSimulator(nullptr),
+	  pSimulator(nullptr),
+	  miscProperties(),
+	  logger(Logger::GetInstance())
 {
 }
 
@@ -77,9 +94,11 @@ OrdinanceBase::OrdinanceBase(
 	  monthlyIncomeFactor(monthlyIncomeFactor),
 	  isIncomeOrdinance(isIncomeOrdinance),
 	  monthlyAdjustedIncome(0),
+	  initialized(false),
 	  available(false),
 	  on(false),
-	  enabled(true),
+	  enabled(false),
+	  haveDeserialized(false),
 	  pResidentialSimulator(nullptr),
 	  pSimulator(nullptr),
 	  miscProperties(properties),
@@ -87,19 +106,142 @@ OrdinanceBase::OrdinanceBase(
 {
 }
 
+OrdinanceBase::OrdinanceBase(const OrdinanceBase& other)
+	: clsid(other.clsid),
+	  refCount(0),
+	  name(other.name),
+	  description(other.description),
+	  enactmentIncome(other.enactmentIncome),
+	  retracmentIncome(other.retracmentIncome),
+	  monthlyConstantIncome(other.monthlyConstantIncome),
+	  monthlyIncomeFactor(other.monthlyIncomeFactor),
+	  isIncomeOrdinance(other.isIncomeOrdinance),
+	  monthlyAdjustedIncome(other.monthlyAdjustedIncome),
+	  initialized(other.initialized),
+	  available(other.available),
+	  on(other.on),
+	  enabled(other.enabled),
+	  haveDeserialized(other.haveDeserialized),
+	  pResidentialSimulator(other.pResidentialSimulator),
+	  pSimulator(other.pSimulator),
+	  miscProperties(other.miscProperties),
+	  logger(Logger::GetInstance())
+{
+}
+
+OrdinanceBase::OrdinanceBase(OrdinanceBase&& other) noexcept
+	: clsid(other.clsid),
+	  refCount(0),
+	  name(std::move(name)),
+	  description(std::move(other.description)),
+	  enactmentIncome(other.enactmentIncome),
+	  retracmentIncome(other.retracmentIncome),
+	  monthlyConstantIncome(other.monthlyConstantIncome),
+	  monthlyIncomeFactor(other.monthlyIncomeFactor),
+	  isIncomeOrdinance(other.isIncomeOrdinance),
+	  monthlyAdjustedIncome(other.monthlyAdjustedIncome),
+	  initialized(other.initialized),
+	  available(other.available),
+	  on(other.on),
+	  enabled(other.enabled),
+	  haveDeserialized(other.haveDeserialized),
+	  pResidentialSimulator(other.pResidentialSimulator),
+	  pSimulator(other.pSimulator),
+	  miscProperties(std::move(other.miscProperties)),
+	  logger(Logger::GetInstance())
+{
+	other.pResidentialSimulator = nullptr;
+	other.pSimulator = nullptr;
+}
+
+OrdinanceBase& OrdinanceBase::operator=(const OrdinanceBase& other)
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	clsid = other.clsid;
+	refCount = 0;
+	name = name;
+	description = other.description;
+	enactmentIncome = other.enactmentIncome;
+	retracmentIncome = other.retracmentIncome;
+	monthlyConstantIncome = other.monthlyConstantIncome;
+	monthlyIncomeFactor = other.monthlyIncomeFactor;
+	isIncomeOrdinance = other.isIncomeOrdinance;
+	monthlyAdjustedIncome = other.monthlyAdjustedIncome;
+	initialized = other.initialized;
+	available = other.available;
+	on = other.on;
+	enabled = other.enabled;
+	haveDeserialized = other.haveDeserialized;
+	pResidentialSimulator = other.pResidentialSimulator;
+	pSimulator = other.pSimulator;
+	miscProperties = other.miscProperties;
+
+	return *this;
+}
+
+OrdinanceBase& OrdinanceBase::operator=(OrdinanceBase&& other) noexcept
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	clsid = other.clsid;
+	refCount = 0;
+	name = std::move(name);
+	description = std::move(other.description);
+	enactmentIncome = other.enactmentIncome;
+	retracmentIncome = other.retracmentIncome;
+	monthlyConstantIncome = other.monthlyConstantIncome;
+	monthlyIncomeFactor = other.monthlyIncomeFactor;
+	isIncomeOrdinance = other.isIncomeOrdinance;
+	monthlyAdjustedIncome = other.monthlyAdjustedIncome;
+	initialized = other.initialized;
+	available = other.available;
+	on = other.on;
+	enabled = other.enabled;
+	haveDeserialized = other.haveDeserialized;
+	pResidentialSimulator = other.pResidentialSimulator;
+	pSimulator = other.pSimulator;
+	miscProperties = std::move(other.miscProperties);
+
+	other.pResidentialSimulator = nullptr;
+	other.pSimulator = nullptr;
+
+	return *this;
+}
+
 bool OrdinanceBase::QueryInterface(uint32_t riid, void** ppvObj)
 {
 	if (riid == clsid)
 	{
-		*ppvObj = this;
 		AddRef();
+		*ppvObj = this;
+
+		return true;
+	}
+	else if (riid == GZIID_cISC4Ordinance)
+	{
+		AddRef();
+		*ppvObj = static_cast<cISC4Ordinance*>(this);
+
+		return true;
+	}
+	else if (riid == GZIID_cIGZSerializable)
+	{
+		AddRef();
+		*ppvObj = static_cast<cIGZSerializable*>(this);
 
 		return true;
 	}
 	else if (riid == GZIID_cIGZUnknown)
 	{
-		*ppvObj = static_cast<cIGZUnknown*>(this);
 		AddRef();
+		*ppvObj = static_cast<cIGZUnknown*>(static_cast<cISC4Ordinance*>(this));
 
 		return true;
 	}
@@ -123,7 +265,10 @@ uint32_t OrdinanceBase::Release()
 
 bool OrdinanceBase::Init(void)
 {
-	enabled = true;
+	if (!haveDeserialized)
+	{
+		enabled = true;
+	}
 	return true;
 }
 
@@ -171,7 +316,7 @@ int64_t OrdinanceBase::GetCurrentMonthlyIncome(void)
 	return monthlyIncomeInteger;
 }
 
-uint32_t OrdinanceBase::GetID(void)
+uint32_t OrdinanceBase::GetID(void) const
 {
 	return clsid;
 }
@@ -396,7 +541,194 @@ bool OrdinanceBase::PreCityShutdown(cISC4City* pCity)
 
 	pResidentialSimulator = nullptr;
 	pSimulator = nullptr;
-	miscProperties.RemoveAllProperties();
 
 	return result;
+}
+
+bool OrdinanceBase::Write(cIGZOStream& stream)
+{
+	if (stream.GetError() != 0)
+	{
+		return false;
+	}
+
+	const uint32_t version = 1;
+	if (!stream.SetUint32(version))
+	{
+		return false;
+	}
+
+	if (!stream.SetUint32(clsid))
+	{
+		return false;
+	}
+
+	if (!stream.SetGZStr(name))
+	{
+		return false;
+	}
+
+	if (!stream.SetGZStr(description))
+	{
+		return false;
+	}
+
+	if (!stream.SetSint64(enactmentIncome))
+	{
+		return false;
+	}
+
+	if (!stream.SetSint64(retracmentIncome))
+	{
+		return false;
+	}
+
+	if (!stream.SetSint64(retracmentIncome))
+	{
+		return false;
+	}
+
+	if (!stream.SetSint64(monthlyConstantIncome))
+	{
+		return false;
+	}
+
+	if (!stream.SetSint64(monthlyAdjustedIncome))
+	{
+		return false;
+	}
+
+	if (!stream.SetFloat32(monthlyIncomeFactor))
+	{
+		return false;
+	}
+
+	if (!WriteBool(stream, isIncomeOrdinance))
+	{
+		return false;
+	}
+
+	if (!miscProperties.Write(stream))
+	{
+		return false;
+	}
+
+	if (!WriteBool(stream, initialized))
+	{
+		return false;
+	}
+
+	if (!WriteBool(stream, available))
+	{
+		return false;
+	}
+
+	if (!WriteBool(stream, on))
+	{
+		return false;
+	}
+
+	if (!WriteBool(stream, enabled))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool OrdinanceBase::Read(cIGZIStream& stream)
+{
+	if (stream.GetError() != 0)
+	{
+		return false;
+	}
+
+	uint32_t version = 0;
+	if (!stream.GetUint32(version) || version != 1)
+	{
+		return false;
+	}
+
+	if (!stream.GetUint32(clsid))
+	{
+		return false;
+	}
+
+	if (!stream.GetGZStr(name))
+	{
+		return false;
+	}
+
+	if (!stream.GetGZStr(description))
+	{
+		return false;
+	}
+
+	if (!stream.GetSint64(enactmentIncome))
+	{
+		return false;
+	}
+
+	if (!stream.GetSint64(retracmentIncome))
+	{
+		return false;
+	}
+
+	if (!stream.GetSint64(retracmentIncome))
+	{
+		return false;
+	}
+
+	if (!stream.GetSint64(monthlyConstantIncome))
+	{
+		return false;
+	}
+
+	if (!stream.GetSint64(monthlyAdjustedIncome))
+	{
+		return false;
+	}
+
+	if (!stream.GetFloat32(monthlyIncomeFactor))
+	{
+		return false;
+	}
+
+	if (!ReadBool(stream, isIncomeOrdinance))
+	{
+		return false;
+	}
+
+	if (!miscProperties.Read(stream))
+	{
+		return false;
+	}
+
+	if (!ReadBool(stream, initialized))
+	{
+		return false;
+	}
+
+	if (!ReadBool(stream, available))
+	{
+		return false;
+	}
+
+	if (!ReadBool(stream, on))
+	{
+		return false;
+	}
+
+	if (!ReadBool(stream, enabled))
+	{
+		return false;
+	}
+
+	haveDeserialized = true;
+	return true;
+}
+
+uint32_t OrdinanceBase::GetGZCLSID()
+{
+	return clsid;
 }

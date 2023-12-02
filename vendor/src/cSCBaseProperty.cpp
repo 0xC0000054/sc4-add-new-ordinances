@@ -1,4 +1,8 @@
 #include "cSCBaseProperty.h"
+#include "cIGZIStream.h"
+#include "cIGZOStream.h"
+#include "cISC4DBSegmentIStream.h"
+#include "cISC4DBSegmentOStream.h"
 
 static const uint32_t GZIID_cSCBaseProperty = 0x151ab0f8;
 
@@ -140,10 +144,34 @@ bool cSCBaseProperty::SetPropertyValue(const cIGZVariant& value)
 
 bool cSCBaseProperty::Write(cIGZOStream& stream) const
 {
-	return false;
+	bool result = false;
+
+	cISC4DBSegmentOStream* dbSegment = nullptr;
+
+	if (stream.QueryInterface(GZIID_cISC4DBSegmentOStream, reinterpret_cast<void**>(&dbSegment)))
+	{
+		result = dbSegment->SetUint32(propertyID)
+			  && dbSegment->WriteVariant(propertyValue);
+
+		dbSegment->Release();
+	}
+
+	return result;
 }
 
 bool cSCBaseProperty::Read(cIGZIStream& stream)
 {
-	return false;
+	bool result = false;
+
+	cISC4DBSegmentIStream* dbSegment = nullptr;
+
+	if (stream.QueryInterface(GZIID_cISC4DBSegmentIStream, reinterpret_cast<void**>(&dbSegment)))
+	{
+		result = dbSegment->GetUint32(propertyID)
+			  && dbSegment->ReadVariant(propertyValue);
+
+		dbSegment->Release();
+	}
+
+	return result;
 }

@@ -23,9 +23,12 @@
     <ClCompile Include="OrdinancePropertyHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\vendor\include\cIGZSerializable.h" />
     <ClInclude Include="..\vendor\include\cIGZVariant.h" />
     <ClInclude Include="..\vendor\include\cISC4App.h" />
     <ClInclude Include="..\vendor\include\cISC4City.h" />
+    <ClInclude Include="..\vendor\include\cISC4DBSegmentIStream.h" />
+    <ClInclude Include="..\vendor\include\cISC4DBSegmentOStream.h" />
     <ClInclude Include="..\vendor\include\cISC4Ordinance.h" />
     <ClInclude Include="..\vendor\include\cISC4OrdinanceSimulator.h" />
     <ClInclude Include="..\vendor\include\cISCProperty.h" />

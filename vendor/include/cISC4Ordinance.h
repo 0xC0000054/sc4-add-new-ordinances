@@ -5,6 +5,8 @@ class cIGZString;
 class cISCPropertyHolder;
 class SC4Percentage;
 
+static const uint32_t GZIID_cISC4Ordinance = 0xAA5E2247;
+
 class cISC4Ordinance : public cIGZUnknown
 {
 	public:
@@ -13,7 +15,7 @@ class cISC4Ordinance : public cIGZUnknown
 
 		virtual int64_t GetCurrentMonthlyIncome(void) = 0;
 
-		virtual uint32_t GetID(void) = 0;
+		virtual uint32_t GetID(void) const = 0;
 		virtual cIGZString* GetName(void) = 0;
 		virtual cIGZString* GetDescription(void) = 0;
 
