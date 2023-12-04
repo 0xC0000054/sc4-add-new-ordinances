@@ -8,3 +8,4 @@ vsspell_ignored_words_30a86b75973f41d3b6fe30b8f7950859 = File:IgnoredWords.dic
 indent_style = tab
 indent_size = 4
 trim_trailing_whitespace = true
+vc_generate_documentation_comments = doxygen_slash_star
