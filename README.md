@@ -11,9 +11,16 @@ All of those effects are using the default values from Ingred.ini, so the should
 
 This mod is experimental, you probably should not test it in a city you care about.
 
-## Known Issues
+## Features:
 
-* The ordinance on/off state is not preserved when loading/saving a city.
+* Adds a new ordinance into the game that does not replace any of the built-in ones.
+* Allows the ordinance to have a custom monthly cost calculation or availability conditions (e.g. starting year or specific buildings that must be in the city).
+* The game persists the ordinance's state to the city save file.
+
+## Limitations:
+
+* The available ordinance effects are restricted to the ones that Maxis already included in the game.
+  * These effects are hard-coded into the various game systems, e.g. the *Travel Strategy Modifier* behavior is hard-coded into the traffic simulator.
 
 ## System Requirements
 
