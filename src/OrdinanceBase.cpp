@@ -280,6 +280,11 @@ bool OrdinanceBase::Shutdown(void)
 
 int64_t OrdinanceBase::GetCurrentMonthlyIncome(void)
 {
+	if (!pResidentialSimulator)
+	{
+		return 0;
+	}
+
 	const int64_t monthlyConstantIncome = GetMonthlyConstantIncome();
 	const double monthlyIncomeFactor = GetMonthlyIncomeFactor();
 
