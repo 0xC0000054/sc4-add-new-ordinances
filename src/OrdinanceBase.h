@@ -146,8 +146,8 @@ public:
 	int64_t GetMonthlyConstantIncome(void);
 
 	/**
-	 * @brief Gets the factor applied to the ordinance cost based on the city population.
-	 * @return The factor applied to the ordinance cost based on the city population.
+	 * @brief Gets the factor applied to the ordinance cost.
+	 * @return The factor applied to the ordinance cost.
 	*/
 	float GetMonthlyIncomeFactor(void);
 
