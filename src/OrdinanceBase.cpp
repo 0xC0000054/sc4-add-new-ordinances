@@ -280,13 +280,13 @@ bool OrdinanceBase::Shutdown(void)
 
 int64_t OrdinanceBase::GetCurrentMonthlyIncome(void)
 {
-	if (!pResidentialSimulator)
-	{
-		return 0;
-	}
-
 	const int64_t monthlyConstantIncome = GetMonthlyConstantIncome();
 	const double monthlyIncomeFactor = GetMonthlyIncomeFactor();
+
+	if (!pResidentialSimulator)
+	{
+		return monthlyConstantIncome;
+	}
 
 	// The monthly income factor is multiplied by the city population.
 	const int32_t cityPopulation = pResidentialSimulator->GetPopulation();
