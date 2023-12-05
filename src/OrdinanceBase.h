@@ -228,6 +228,9 @@ public:
 
 protected:
 
+	static bool ReadBool(cIGZIStream& stream, bool& value);
+	static bool WriteBool(cIGZOStream& stream, bool value);
+
 	virtual bool Write(cIGZOStream& stream);
 	virtual bool Read(cIGZIStream& stream);
 	uint32_t GetGZCLSID();

@@ -20,29 +20,6 @@
 #include <algorithm>
 #include <stdlib.h>
 
-namespace
-{
-	bool ReadBool(cIGZIStream& stream, bool& value)
-	{
-		uint8_t temp = 0;
-		// We use GetVoid because GetUint8 always returns false.
-		if (!stream.GetVoid(&temp, 1))
-		{
-			return false;
-		}
-
-		value = temp != 0;
-		return true;
-	}
-
-	bool WriteBool(cIGZOStream& stream, bool value)
-	{
-		const uint8_t uint8Value = static_cast<uint8_t>(value);
-
-		return stream.SetVoid(&uint8Value, 1);
-	}
-}
-
 OrdinanceBase::OrdinanceBase(
 	uint32_t clsid,
 	const char* name,
@@ -548,6 +525,26 @@ bool OrdinanceBase::PreCityShutdown(cISC4City* pCity)
 	pSimulator = nullptr;
 
 	return result;
+}
+
+bool OrdinanceBase::ReadBool(cIGZIStream& stream, bool& value)
+{
+	uint8_t temp = 0;
+	// We use GetVoid because GetUint8 always returns false.
+	if (!stream.GetVoid(&temp, 1))
+	{
+		return false;
+	}
+
+	value = temp != 0;
+	return true;
+}
+
+bool OrdinanceBase::WriteBool(cIGZOStream& stream, bool value)
+{
+	const uint8_t uint8Value = static_cast<uint8_t>(value);
+
+	return stream.SetVoid(&uint8Value, 1);
 }
 
 bool OrdinanceBase::Write(cIGZOStream& stream)
