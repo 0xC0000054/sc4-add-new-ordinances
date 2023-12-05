@@ -18,7 +18,7 @@
 #include "OrdinancePropertyHolder.h"
 #include "Logger.h"
 
-class OrdinanceBase : public cISC4Ordinance, cIGZSerializable
+class OrdinanceBase : public cISC4Ordinance, protected cIGZSerializable
 {
 public:
 
@@ -226,16 +226,15 @@ public:
 	*/
 	virtual bool PreCityShutdown(cISC4City* pCity);
 
-private:
+protected:
 
-	bool Write(cIGZOStream& stream);
-	bool Read(cIGZIStream& stream);
+	virtual bool Write(cIGZOStream& stream);
+	virtual bool Read(cIGZIStream& stream);
 	uint32_t GetGZCLSID();
 
 	Logger& logger;
 
 	uint32_t clsid;
-	uint32_t refCount;
 	cRZBaseString name;
 	cRZBaseString description;
 	int64_t enactmentIncome;
@@ -244,13 +243,17 @@ private:
 	int64_t monthlyAdjustedIncome;
 	float monthlyIncomeFactor;
 	bool isIncomeOrdinance;
-	cISC4ResidentialSimulator* pResidentialSimulator;
-	cISC4Simulator* pSimulator;
 	OrdinancePropertyHolder miscProperties;
 	bool initialized;
 	bool available;
 	bool on;
 	bool enabled;
 	bool haveDeserialized;
+
+private:
+
+	uint32_t refCount;
+	cISC4ResidentialSimulator* pResidentialSimulator;
+	cISC4Simulator* pSimulator;
 };
 
