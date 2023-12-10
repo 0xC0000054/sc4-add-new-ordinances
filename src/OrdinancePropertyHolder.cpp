@@ -382,6 +382,12 @@ bool OrdinancePropertyHolder::AddProperty(uint32_t dwProperty, void* pUnknown, u
     return false;
 }
 
+bool OrdinancePropertyHolder::AddProperty(uint32_t dwProperty, float value)
+{
+	properties.push_back(cSCBaseProperty(dwProperty, value));
+	return true;
+}
+
 bool OrdinancePropertyHolder::CopyAddProperty(cISCProperty* pProperty, bool bUnknown)
 {
     return false;
