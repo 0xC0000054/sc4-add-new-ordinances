@@ -415,7 +415,16 @@ bool OrdinancePropertyHolder::RemoveAllProperties(void)
 
 bool OrdinancePropertyHolder::EnumProperties(FunctionPtr1 pFunction1, void* pData)
 {
-    return false;
+	size_t propertyCount = properties.size();
+
+	for (size_t i = 0; i < propertyCount; i++)
+	{
+		cISCProperty* property = &properties[i];
+
+		pFunction1(property, pData);
+	}
+
+    return true;
 }
 
 bool OrdinancePropertyHolder::EnumProperties(FunctionPtr2 pFunction2, FunctionPtr1 pFunctionPipe)
