@@ -20,6 +20,8 @@
 #include <algorithm>
 #include <stdlib.h>
 
+static const uint32_t GZIID_OrdinanceBase = 0x3cb94c9e;
+
 OrdinanceBase::OrdinanceBase(
 	uint32_t clsid,
 	const char* name,
@@ -52,7 +54,7 @@ OrdinanceBase::OrdinanceBase(
 }
 
 OrdinanceBase::OrdinanceBase(
-	uint32_t clsid, 
+	uint32_t clsid,
 	const char* name,
 	const char* description,
 	int64_t enactmentIncome,
@@ -194,7 +196,7 @@ OrdinanceBase& OrdinanceBase::operator=(OrdinanceBase&& other) noexcept
 
 bool OrdinanceBase::QueryInterface(uint32_t riid, void** ppvObj)
 {
-	if (riid == clsid)
+	if (riid == GZIID_OrdinanceBase)
 	{
 		AddRef();
 		*ppvObj = this;
@@ -269,7 +271,7 @@ int64_t OrdinanceBase::GetCurrentMonthlyIncome(void)
 	const int32_t cityPopulation = pResidentialSimulator->GetPopulation();
 	const double populationIncome = monthlyIncomeFactor * static_cast<double>(cityPopulation);
 
-	const double monthlyIncome = static_cast<double>(monthlyConstantIncome) + populationIncome;	
+	const double monthlyIncome = static_cast<double>(monthlyConstantIncome) + populationIncome;
 
 	int64_t monthlyIncomeInteger = 0;
 
