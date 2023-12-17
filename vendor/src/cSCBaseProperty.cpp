@@ -87,16 +87,22 @@ bool cSCBaseProperty::QueryInterface(uint32_t riid, void** ppvObj)
 	{
 		AddRef();
 		*ppvObj = this;
+
+		return true;
 	}
 	else if (riid == GZIID_cISCProperty)
 	{
 		AddRef();
 		*ppvObj = static_cast<cISCProperty*>(this);
+
+		return true;
 	}
 	else if (riid == GZIID_cIGZUnknown)
 	{
 		AddRef();
 		*ppvObj = static_cast<cIGZUnknown*>(this);
+
+		return true;
 	}
 
 	return propertyValue.QueryInterface(riid, ppvObj);
