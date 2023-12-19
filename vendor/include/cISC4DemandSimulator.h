@@ -15,10 +15,11 @@ public:
 
     /**
      * @brief Gets the demand details for the specified type.
-     * @param type The type to query for.
+     * @param demand The demand identifier to search for.
+     * @param demandIndex The demand identifier index (the upper 2 bytes of the instance ID).
      * @return A cISC4Demand class for the specified type, or NULL if it was not found.
     */
-    virtual cISC4Demand* GetDemand(uint32_t type) = 0;
+    virtual cISC4Demand* GetDemand(uint32_t demandID, uint32_t demandIndex) = 0;
     virtual void UpdateOccupantEffects(SC4Percentage unknown1, SC4Percentage const& unknown2, SC4Percentage const& unknown3) = 0;
 
     /**
