@@ -17,7 +17,6 @@
 
 static constexpr uint32_t GZCLSID_OrdinancePropertyHolder = 0xd0f95c79;
 static constexpr uint32_t GZIID_OrdinancePropertyHolder = 0x84672560;
-static constexpr uint32_t GZIID_cISCPropertyHolder = 0x25216283;
 
 namespace
 {
