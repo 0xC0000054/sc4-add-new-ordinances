@@ -322,7 +322,7 @@ uint32_t OrdinanceBase::GetYearFirstAvailable(void)
 
 SC4Percentage OrdinanceBase::GetChanceAvailability(void)
 {
-	SC4Percentage percentage{ 100.0f };
+	SC4Percentage percentage{ 1.0f };
 
 	return percentage;
 }
