@@ -11,33 +11,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\vendor\src\cSCBaseProperty.cpp" />
-    <ClCompile Include="..\vendor\src\cRZBaseString.cpp" />
-    <ClCompile Include="..\vendor\src\cRZBaseVariant.cpp" />
-    <ClCompile Include="..\vendor\src\cRZCOMDllDirector.cpp" />
-    <ClCompile Include="..\vendor\src\cRZMessage2.cpp" />
-    <ClCompile Include="..\vendor\src\cRZMessage2Standard.cpp" />
+    <ClCompile Include="..\vendor\gzcom-dll\src\cSCBaseProperty.cpp" />
+    <ClCompile Include="..\vendor\gzcom-dll\src\cRZBaseString.cpp" />
+    <ClCompile Include="..\vendor\gzcom-dll\src\cRZBaseVariant.cpp" />
+    <ClCompile Include="..\vendor\gzcom-dll\src\cRZCOMDllDirector.cpp" />
+    <ClCompile Include="..\vendor\gzcom-dll\src\cRZMessage2.cpp" />
+    <ClCompile Include="..\vendor\gzcom-dll\src\cRZMessage2Standard.cpp" />
     <ClCompile Include="cGZNewOrdinanceTest.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="OrdinanceBase.cpp" />
     <ClCompile Include="OrdinancePropertyHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\vendor\include\cIGZSerializable.h" />
-    <ClInclude Include="..\vendor\include\cIGZVariant.h" />
-    <ClInclude Include="..\vendor\include\cISC4App.h" />
-    <ClInclude Include="..\vendor\include\cISC4City.h" />
-    <ClInclude Include="..\vendor\include\cISC4DBSegmentIStream.h" />
-    <ClInclude Include="..\vendor\include\cISC4DBSegmentOStream.h" />
-    <ClInclude Include="..\vendor\include\cISC4Ordinance.h" />
-    <ClInclude Include="..\vendor\include\cISC4OrdinanceSimulator.h" />
-    <ClInclude Include="..\vendor\include\cISCProperty.h" />
-    <ClInclude Include="..\vendor\include\cRZMessage2COMDirector.h" />
-    <ClInclude Include="..\vendor\include\cRZMessage2Standard.h" />
-    <ClInclude Include="..\vendor\include\cRZBaseVariant.h" />
-    <ClInclude Include="..\vendor\include\cSCBaseProperty.h" />
-    <ClInclude Include="..\vendor\include\GZServPtrs.h" />
-    <ClInclude Include="..\vendor\include\SC4Percentage.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cIGZSerializable.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cIGZVariant.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cISC4App.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cISC4City.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cISC4DBSegmentIStream.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cISC4DBSegmentOStream.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cISC4Ordinance.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cISC4OrdinanceSimulator.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cISCProperty.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cRZMessage2COMDirector.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cRZMessage2Standard.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cRZBaseVariant.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\cSCBaseProperty.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\GZServPtrs.h" />
+    <ClInclude Include="..\vendor\gzcom-dll\include\SC4Percentage.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="OrdinanceBase.h" />
     <ClInclude Include="OrdinancePropertyHolder.h" />
@@ -93,7 +93,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\vendor\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\gzcom-dll\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -116,7 +116,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\vendor\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\gzcom-dll\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
