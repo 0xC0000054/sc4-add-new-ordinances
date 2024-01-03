@@ -38,7 +38,7 @@ public:
 	virtual float GetTaxModifier() const = 0;
 	virtual bool SetTaxModifier(float value) = 0;
 
-	virtual SC4Percentage GetDemandCap() const = 0;
+	virtual SC4Percentage* GetDemandCap() const = 0;
 	virtual bool SetDemandCap(const SC4Percentage& demandCap) = 0;
 
 	virtual uint32_t GetRegionUse() = 0;
