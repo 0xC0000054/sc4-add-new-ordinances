@@ -23,8 +23,8 @@ public:
 	virtual float QueryActiveDemandMax() const = 0;
 	virtual float QueryActiveDemandMin() const = 0;
 
-	virtual void* AddToSupplyValue(float value) = 0;
-	virtual void* AddToDemandValue(float value) = 0;
+	virtual bool AddToSupplyValue(float value) = 0;
+	virtual bool AddToDemandValue(float value) = 0;
 
 	virtual bool SetSupplyValue(float value) = 0;
 	virtual bool SetDemandValue(float value) = 0;
